@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Generated experiment outputs (results, models, figures)
+results/
+runs/
+*.pth
+*.pt
+checkpoints/
+*.npz
+*.png
+*.pdf
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
