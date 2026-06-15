@@ -39,7 +39,7 @@ def get_dqn_config(mode='time'):
         # Gradient clipping
         'grad_clip': 1.0,
         
-        # Shared learner-side safety guard for critic stability
+        # Reward clipping
         'reward_clip_min': -25,
         'reward_clip_max': 0,
     }

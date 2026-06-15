@@ -590,12 +590,12 @@ def main() -> None:
     parser.add_argument("--source-run-dir", type=str, required=True, help="Straight-road run directory used for eta/config and optional fine-tune weights")
     parser.add_argument("--algorithm-set", choices=["paper3", "all6"], default="paper3")
     parser.add_argument("--algorithms", nargs="+", choices=ORDERED_ALGORITHMS, default=None)
-    parser.add_argument("--episodes", type=int, default=1500)
+    parser.add_argument("--episodes", type=int, default=None, help="Defaults to 2000 (finetune) / 5000 (scratch) per the paper")
     parser.add_argument("--eval-interval", type=int, default=100)
     parser.add_argument("--checkpoint-eval-episodes", type=int, default=25)
     parser.add_argument("--final-eval-episodes", type=int, default=100)
     parser.add_argument("--results-group", type=str, required=True)
-    parser.add_argument("--de-mode", choices=["paper", "screen", "sweep"], default="screen")
+    parser.add_argument("--de-mode", choices=["paper", "screen", "sweep"], default="paper")
     parser.add_argument("--uturn-radius", type=float, default=10.0)
     parser.add_argument("--uturn-leg-length", type=float, default=178.04203673205103)
     parser.add_argument("--base-station-x", type=float, default=0.0)
@@ -607,6 +607,8 @@ def main() -> None:
         default="cuda" if torch.cuda.is_available() else "cpu",
     )
     args = parser.parse_args()
+    if args.episodes is None:
+        args.episodes = 2000 if args.mode == "finetune" else 5000
 
     selected_algorithms = parse_algorithms(args)
     source_run_dir = os.path.abspath(args.source_run_dir)

@@ -14,7 +14,7 @@ def get_sac_config(mode='time'):
         'actor_lr': 1e-4,
         'critic_lr': 2e-4,
         'alpha_lr': 1e-4,
-        'batch_size': 256,  # Increased from 128 for reduced variance
+        'batch_size': 256,
         'gamma': 0.99,
         'tau': 0.005,
         
@@ -49,8 +49,7 @@ def get_sac_config(mode='time'):
         'log_std_min': -20,
         'log_std_max': -0.5,
 
-        # Initialization priors for SAC actor heads. These are useful in RL
-        # because the initial policy determines the early replay distribution.
+        # Initialization priors for SAC actor heads
         'initial_delta_bias_time': 0.0,
         'initial_power_bias_time': 1.1,
         'initial_delta_bias_energy': 0.0,
@@ -60,7 +59,7 @@ def get_sac_config(mode='time'):
         # Preset variation noise (for exploration)
         'preset_noise_std': 0.05,
         
-        # Shared learner-side safety guard for critic stability
+        # Reward clipping
         'reward_clip_min': -25,
         'reward_clip_max': 0,
     }

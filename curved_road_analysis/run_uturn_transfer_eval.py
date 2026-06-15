@@ -146,7 +146,7 @@ def parse_algorithms(args: argparse.Namespace) -> List[str]:
         return list(PAPER_TOP3)
     if args.algorithm_set == "all6":
         return list(ORDERED_ALGORITHMS)
-    return list(ORDERED_ALGORITHMS)
+    return list(PAPER_TOP3)
 
 
 def clear_algorithm_agent(trainer, alg_name: str) -> None:
@@ -182,12 +182,12 @@ def main() -> None:
     parser.add_argument("--only-algorithm", choices=ORDERED_ALGORITHMS, default=None)
     parser.add_argument("--algorithm-set", choices=["paper3", "all6"], default=None)
     parser.add_argument("--algorithms", nargs="+", choices=ORDERED_ALGORITHMS, default=None)
-    parser.add_argument("--include-baselines", action="store_true", help="Also evaluate fixed baselines and DE")
-    parser.add_argument("--de-mode", choices=["paper", "screen", "sweep"], default="screen")
-    parser.add_argument("--uturn-radius", type=float, default=25.0)
-    parser.add_argument("--uturn-leg-length", type=float, default=154.48009183012758)
+    parser.add_argument("--include-baselines", action=argparse.BooleanOptionalAction, default=True, help="Evaluate fixed baselines and DE (default: on)")
+    parser.add_argument("--de-mode", choices=["paper", "screen", "sweep"], default="paper")
+    parser.add_argument("--uturn-radius", type=float, default=10.0)
+    parser.add_argument("--uturn-leg-length", type=float, default=178.04203673205103)
     parser.add_argument("--base-station-x", type=float, default=0.0)
-    parser.add_argument("--base-station-y", type=float, default=5.0)
+    parser.add_argument("--base-station-y", type=float, default=10.0)
     parser.add_argument("--closed-loop", action="store_true", help="Wrap vehicles after one full U-turn instead of using an open-ended lower leg")
     parser.add_argument(
         "--device",

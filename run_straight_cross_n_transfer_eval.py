@@ -178,8 +178,8 @@ def main() -> None:
     parser.add_argument("--only-algorithm", choices=ORDERED_DE_ALGORITHMS, default=None)
     parser.add_argument("--algorithm-set", choices=["paper2", "all3d"], default=None)
     parser.add_argument("--algorithms", nargs="+", choices=ORDERED_DE_ALGORITHMS, default=None)
-    parser.add_argument("--include-baselines", action="store_true", help="Also evaluate fixed baselines and DE")
-    parser.add_argument("--de-mode", choices=["paper", "screen", "sweep"], default="screen")
+    parser.add_argument("--include-baselines", action=argparse.BooleanOptionalAction, default=True, help="Evaluate fixed baselines and DE (default: on)")
+    parser.add_argument("--de-mode", choices=["paper", "screen", "sweep"], default="paper")
     parser.add_argument(
         "--device",
         type=str,

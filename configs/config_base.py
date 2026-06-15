@@ -7,12 +7,11 @@ def get_paper_config():
     
     # Single integrated objective controlled by the weight eta. The
     # environment also accepts 'time' and 'energy' as objective targets.
-    optimization_target = 'mixed'  # preferred: 'mixed'
+    optimization_target = 'mixed'
     mixed_time_weight = 0.5  # eta in the unified objective
     
-    # Keep vehicles homogeneous across leader reselection. The active leader
-    # uses the same uplink power budget as every other vehicle.
-    leader_power_multiplier = 1.0
+    # The active leader uploads at twice the per-vehicle uplink power budget.
+    leader_power_multiplier = 2.0
     
     # Base environment configuration matching paper's system model
     environment_config = {
@@ -36,7 +35,7 @@ def get_paper_config():
         'fading_correlation': 0.8,  # ρ - Correlation coefficient for fading between time slots (0-1)
         
         # Location and movement parameters
-        'base_station_position': [200, 0],  # Base station at road start
+        'base_station_position': [225, 0],  # Base station at road start
         'vehicle_speed_min': 10,  # Minimum vehicle speed in m/s (36 km/h)
         'vehicle_speed_max': 15,  # Maximum vehicle speed in m/s (54 km/h)
         'num_lanes': 3,  # Number of lanes on the road
@@ -52,26 +51,26 @@ def get_paper_config():
         'redundancy_upper': 0.5,  # β_{i,k} maximum - 50% redundancy
         
         # Deduplication parameters (Section III.F)
-        'cpu_cycles_per_bit': 10,  # Effective per-bit CPU cost used by the simplified deduplication model
-        'chunk_overhead_cycles': 1e6,  # Fixed per-chunk management overhead in the simplified model
+        'cpu_cycles_per_bit': 10,  # C_1 - CPU cycles per bit
+        'chunk_overhead_cycles': 1e6,  # C_3 - Per-chunk overhead cycles
         'leader_cpu_frequency': 2.8e9,  # f_{i*} - Leader CPU frequency (2.8 GHz)
         'cpu_power_constant': 1e-27,  # κ - Hardware-dependent constant
-        'leader_selection_mode': 'episode_start_scored',  # fixed_zero or episode_start_scored
-        'leader_selection_cpu_weight': 0.0,  # ζ in the paper score; 0 keeps homogeneous-CPU code behavior explicit
-        'leader_selection_v2v_aggregation': 'sum',  # sum reproduces the current score; mean balances V2V centrality against V2I more evenly
+        'leader_selection_mode': 'episode_start_scored',  # Leader selected by per-episode score
+        'leader_selection_cpu_weight': 0.0,  # ζ - CPU weight in leader score
+        'leader_selection_v2v_aggregation': 'sum',  # V2V score aggregation
         'leader_reselection_interval_slots': 10,  # 0 disables mid-episode reselection; 10 means reevaluate at slots 10 and 20
         
         # Constraints (Section IV)
-        'time_budget': 5.0,  # T_max - Maximum time budget per slot
+        'time_budget': 2.0,  # T_max - Maximum time budget per slot
         'energy_budget': 1.0,  # E_max - Maximum energy budget per slot (1 Joule)
         'mixed_time_weight': mixed_time_weight,  # eta in the unified time-energy objective
-        'reward_mode': 'paper_counted_normalized',  # Other supported modes: canonical_flat_normalized, paper_excess_normalized, paper_counted_raw, custom
-        'constraint_penalty_mode': 'flat_any_violation',  # Used directly only when reward_mode=custom
-        'constraint_penalty_value': 10.0,  # Lambda_cons / flat penalty magnitude
-        'energy_reward_normalization_factor': 4.0,  # Canonical energy-mode reward scaling used during training/evaluation
+        'reward_mode': 'paper_counted_normalized',  # Reward shaping mode
+        'constraint_penalty_mode': 'flat_any_violation',  # Constraint penalty mode
+        'constraint_penalty_value': 0.1,  # Lambda_cons / flat penalty magnitude
+        'energy_reward_normalization_factor': 4.0,  # Energy-mode reward normalization
         
         # Optimization target
-        'optimization_target': optimization_target,  # preferred: 'mixed'
+        'optimization_target': optimization_target,
         
         # Leader upload handling
         'ignore_leader_upload': False,  # Whether to ignore leader's upload to BS
@@ -83,7 +82,6 @@ def get_paper_config():
         
         # Leader upload power
         'leader_power_multiplier': leader_power_multiplier,  # Leader upload power is leader_power_multiplier * p_max
-                                                             # Set to 1.0 so leader/follower vehicles remain homogeneous
         'leader_uplink_resource_factor': 1.0,  # Effective BS scheduling/resource multiplier for the active leader upload
     }
     
@@ -103,17 +101,3 @@ def get_paper_config():
     }
     
     return config
-
-
-
-
-if __name__ == "__main__":
-    # Example usage
-    print("\n\nExample Usage:")
-    print("-------------")
-    print("from config_paper import get_paper_config")
-    print("from vehicular_env_paper import PaperVehicularEnvironment")
-    print("")
-    print("# Use configuration")
-    print("config = get_paper_config()")
-    print("env = PaperVehicularEnvironment(config['environment'])")

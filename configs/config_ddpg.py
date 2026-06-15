@@ -46,14 +46,13 @@ def get_ddpg_config(mode='time'):
         # Preset variation noise (for decentralized agents)
         'preset_noise_std': 0.05,
 
-        # Initial action priors for the sigmoid actor, specified directly in
-        # action space for mode-aware initialization.
+        # Initial action priors (mode-aware)
         'initial_delta_action_time': 0.5,
         'initial_power_action_time': 0.9,
         'initial_delta_action_energy': 0.5,
         'initial_power_action_energy': 0.1,
         
-        # Shared learner-side safety guard for critic stability
+        # Reward clipping
         'reward_clip_min': -25,
         'reward_clip_max': 0,
     }
