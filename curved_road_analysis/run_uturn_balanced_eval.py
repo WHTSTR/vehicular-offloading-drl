@@ -164,10 +164,10 @@ def main() -> None:
     parser.add_argument("--eval-interval", type=int, default=100)
     parser.add_argument("--episodes", type=int, default=5000, help="Metadata only; no retraining is performed")
     parser.add_argument("--results-group", type=str, default="uturn_balanced_eval")
-    parser.add_argument("--uturn-radius", type=float, default=25.0)
-    parser.add_argument("--uturn-leg-length", type=float, default=154.48009183012758)
+    parser.add_argument("--uturn-radius", type=float, default=10.0)
+    parser.add_argument("--uturn-leg-length", type=float, default=178.04203673205103)
     parser.add_argument("--base-station-x", type=float, default=0.0)
-    parser.add_argument("--base-station-y", type=float, default=5.0)
+    parser.add_argument("--base-station-y", type=float, default=10.0)
     parser.add_argument("--closed-loop", action="store_true", help="Wrap vehicles after one full U-turn instead of using an open-ended lower leg")
     parser.add_argument(
         "--device",
